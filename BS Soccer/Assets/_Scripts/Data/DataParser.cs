@@ -108,5 +108,7 @@ public class DataParser : MonoBehaviour
             frames.Add(frame);
         }
         sr.Close();
+
+        print(frames[0].Persons.Count);
     }
 }
