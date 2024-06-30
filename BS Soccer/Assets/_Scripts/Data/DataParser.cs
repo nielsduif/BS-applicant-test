@@ -8,41 +8,47 @@ using UnityEngine;
 /// </summary>
 public class DataParser : MonoBehaviour
 {
-    public class Player
+    [System.Serializable]
+    public class Person
     {
-        public int ID;
+        public int Id;
         public float Timestamp;
-        public Vector3 Position;
+        public float[] Position;
         public float Speed;
         public int TeamSide;
         public int JerseyNumber;
-        public PlayerContext playerContext;
+        public int AnimationContext;
+        public PersonContext PersonContext;
     }
-
-    public class PlayerContext
+   
+    [System.Serializable]
+    public class PersonContext
     {
+        public float? MovementOrientation;
         public bool HasBallPosession;
         public int PlayerState;
-        public float MovementOrientation;
     }
-
+    
+    [System.Serializable]
     public class Ball
     {
         public int ID;
         public float TimeStamp;
-        public Vector3 Position;
+        public float[] Position;
         public float Speed;
         public int TeamSide;
         public int JerseyNumber;
-        public TrackableBallContext ballContext;
+        public TrackableBallContext TrackableBallContext;
     }
-
+    
+    [System.Serializable]
     public class TrackableBallContext
     {
         public int BallState;
         public int Possesion;
     }
-
+   
+    [System.Serializable]
     public class GameClockContext
     {
         public int Period;
@@ -50,26 +56,28 @@ public class DataParser : MonoBehaviour
         public int Second;
         public int InjuryTime;
     }
-
+    
+    [System.Serializable]
     public class MatchScoreContext
     {
         public int HomeSore;
         public int AwayScore;
     }
-
+   
+    [System.Serializable]
     public class DataFrame
     {
         public int FrameCount;
         public float TimestampUTC;
-        public List<Player> players;
-        public Ball ball;
-        public GameClockContext gameClockContext;
-        public MatchScoreContext matchScoreContext;
+        public List<Person> Persons = new List<Person>();
+        public Ball Ball;
+        public GameClockContext GameClockContext;
+        public MatchScoreContext MatchScoreContext;
     }
-
+    
     public static DataParser Instance { get; private set; }
     [SerializeField] private string fileName = "Applicant-test.idf";
-    public List<DataFrame> frames = new List<DataFrame>();
+    [HideInInspector] public List<DataFrame> frames { get; private set; } = new List<DataFrame>();
 
     private void Awake()
     {
@@ -91,7 +99,9 @@ public class DataParser : MonoBehaviour
         string line;
         while ((line = sr.ReadLine()) != null)
         {
-            print(line);
+            DataFrame frame = JsonUtility.FromJson<DataFrame>(line);
+            frames.Add(frame);
         }
+        sr.Close();
     }
 }
