@@ -93,6 +93,11 @@ public class DataParser : MonoBehaviour
 
     private void Start()
     {
+        LoadData();
+    }
+
+    private void LoadData()
+    {
         string path = $"{Application.dataPath}/Resources/{fileName}";
 
         StreamReader sr = new StreamReader(path);
