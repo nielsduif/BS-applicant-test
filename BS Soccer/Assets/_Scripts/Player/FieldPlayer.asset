@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f07d3dd7ef511e74abc5e22fbfb6a2f9, type: 3}
   m_Name: FieldPlayer
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4787972390401353221, guid: 40e96a74fcc2b9c4181c1bbf498fdc8d, type: 3}
+  prefabs:
+  - {fileID: 4787972390401353221, guid: 40e96a74fcc2b9c4181c1bbf498fdc8d, type: 3}
+  - {fileID: 4787972390401353221, guid: f494041d99e50f44ba009aaa79126b25, type: 3}
   playerType: 1
