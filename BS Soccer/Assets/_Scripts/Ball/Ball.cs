@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private int currentFrame;
+    private void FixedUpdate()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        DataParser.DataFrame frame = DataParser.Instance.frames[currentFrame];
+        transform.position = Util.Float3ToVector(frame.Ball.Position);
+        currentFrame++;
     }
 }

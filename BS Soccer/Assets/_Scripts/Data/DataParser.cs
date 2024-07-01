@@ -68,7 +68,7 @@ public class DataParser : MonoBehaviour
     }
    
     /// <summary>
-    /// Class that hold all information of a frame, with the connection to the underlaying classes
+    /// Class that holds all information of a frame, with the connection to the underlaying classes
     /// </summary>
     [System.Serializable]
     public class DataFrame
@@ -86,7 +86,7 @@ public class DataParser : MonoBehaviour
     [HideInInspector] public List<DataFrame> frames { get; private set; } = new List<DataFrame>();
 
     /// <summary>
-    /// Singleton pattern
+    /// Singleton, making sure only one instance is present
     /// </summary>
     private void Awake()
     {
