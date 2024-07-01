@@ -34,8 +34,17 @@ public class PlayerManager : MonoBehaviour
             for (int i = 0; i < playerID.Count - 1; i++)
             {
                 DataParser.DataFrame frame = DataParser.Instance.frames[currentFrame];
+                GameObject player = playerID[frame.Persons[i].Id];
+
                 Vector3 newPosition = Util.Float3ToVector(frame.Persons[i].Position);
-                playerID[frame.Persons[i].Id].transform.position = newPosition;
+                player.transform.position = newPosition;
+
+                Vector3 lookDir = Ball.Instance.transform.position - player.transform.position;
+                lookDir.y = 0; // freezes looking up and down
+                if (lookDir != Vector3.zero)
+                {
+                    player.transform.localRotation = Quaternion.LookRotation(lookDir);
+                }
             }
         }
         currentFrame++;
