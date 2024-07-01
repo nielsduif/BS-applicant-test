@@ -8,12 +8,15 @@ using UnityEngine;
 /// </summary>
 public class DataParser : MonoBehaviour
 {
+    /// <summary>
+    /// Basic classes holding all the values provided in the rawdata
+    /// </summary>
     [System.Serializable]
     public class Person
     {
         public int Id;
         public float Timestamp;
-        public float[] Position;
+        public float[] Position;                //cant use vector3 since it can't convert
         public float Speed;
         public int TeamSide;
         public int JerseyNumber;
@@ -24,7 +27,7 @@ public class DataParser : MonoBehaviour
     [System.Serializable]
     public class PersonContext
     {
-        public float? MovementOrientation;
+        public float? MovementOrientation;      //only type of optional data
         public bool HasBallPosession;
         public int PlayerState;
     }
@@ -64,6 +67,9 @@ public class DataParser : MonoBehaviour
         public int AwayScore;
     }
    
+    /// <summary>
+    /// Class that hold all information of a frame, with the connection to the underlaying classes
+    /// </summary>
     [System.Serializable]
     public class DataFrame
     {
@@ -79,6 +85,9 @@ public class DataParser : MonoBehaviour
     [SerializeField] private string fileName = "Applicant-test.idf";
     [HideInInspector] public List<DataFrame> frames { get; private set; } = new List<DataFrame>();
 
+    /// <summary>
+    /// Singleton pattern
+    /// </summary>
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -89,13 +98,13 @@ public class DataParser : MonoBehaviour
         {
             Instance = this;
         }
-    }
 
-    private void Start()
-    {
         LoadData();
     }
 
+    /// <summary>
+    /// Loads the file based on location and adds the values for each frame to a list
+    /// </summary>
     private void LoadData()
     {
         string path = $"{Application.dataPath}/Resources/{fileName}";
