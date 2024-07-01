@@ -5,6 +5,21 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     private int currentFrame;
+
+    public static Ball Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void FixedUpdate()
     {
         DataParser.DataFrame frame = DataParser.Instance.frames[currentFrame];
