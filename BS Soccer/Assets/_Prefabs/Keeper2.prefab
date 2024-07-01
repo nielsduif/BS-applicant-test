@@ -325,7 +325,7 @@ GameObject:
   m_Component:
   - component: {fileID: 641019814125772804}
   m_Layer: 0
-  m_Name: FieldPlayer
+  m_Name: Keeper2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -412,7 +412,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e20c49c03a7f3ae4b96b4f23c0e9c5e8, type: 2}
+  - {fileID: 2100000, guid: c16cc945b00833e4d91f21430fed5cff, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
