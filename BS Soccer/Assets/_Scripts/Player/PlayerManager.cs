@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Contols the spawning, movement and rotation of all players
+/// </summary>
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private Player[] playerTypes;
     [SerializeField] Transform playerParent;
-    private Dictionary<int, GameObject> playerID = new Dictionary<int, GameObject>();
+    private Dictionary<int, PlayerDataDisplay> playerID = new Dictionary<int, PlayerDataDisplay>();
     [SerializeField] private int[] goalKeeperID = { 1, 124 };
     private int currentFrame = 0;
 
@@ -22,32 +25,45 @@ public class PlayerManager : MonoBehaviour
         {
             GameObject player = Instantiate(PickPersonAsset(person), Util.Float3ToVector(person.Position), Quaternion.identity, playerParent);
             player.name = $"Player {person.JerseyNumber}";
-            player.AddComponent<PlayerData>().data = person;
-            playerID.Add(person.Id, player);
+            PlayerDataDisplay playerDataDisplay = player.GetComponent<PlayerDataDisplay>();
+            playerDataDisplay.SetJerseyNumber(person.JerseyNumber);
+            playerID.Add(person.Id, playerDataDisplay);
         }
     }
 
     private void FixedUpdate()
     {
-        if (currentFrame < DataParser.Instance.frames.Count)
+        if (FramesAvailable())
         {
-            for (int i = 0; i < playerID.Count - 1; i++)
-            {
-                DataParser.DataFrame frame = DataParser.Instance.frames[currentFrame];
-                GameObject player = playerID[frame.Persons[i].Id];
-
-                Vector3 newPosition = Util.Float3ToVector(frame.Persons[i].Position);
-                player.transform.position = newPosition;
-
-                Vector3 lookDir = Ball.Instance.transform.position - player.transform.position;
-                lookDir.y = 0; // freezes looking up and down
-                if (lookDir != Vector3.zero)
-                {
-                    player.transform.localRotation = Quaternion.LookRotation(lookDir);
-                }
-            }
+            SetTransforms();
+            currentFrame++;
         }
-        currentFrame++;
+    }
+
+    private void SetTransforms()
+    {
+        for (int i = 0; i < playerID.Count - 1; i++)
+        {
+            DataParser.DataFrame frame = DataParser.Instance.frames[currentFrame];
+            PlayerDataDisplay player = playerID[frame.Persons[i].Id];
+
+            Vector3 newPosition = Util.Float3ToVector(frame.Persons[i].Position);
+            player.transform.position = newPosition;
+
+            Vector3 lookDir = Ball.Instance.transform.position - player.transform.position;
+            lookDir.y = 0; // freezes looking up and down
+            if (lookDir != Vector3.zero)
+            {
+                player.transform.localRotation = Quaternion.LookRotation(lookDir);
+            }
+
+            player.UpdateSpeedText(frame.Persons[i].Speed);
+        }
+    }
+
+    private bool FramesAvailable()
+    {
+        return (currentFrame < DataParser.Instance.frames.Count);
     }
 
     /// <summary>
