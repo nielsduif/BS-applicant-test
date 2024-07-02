@@ -98,7 +98,7 @@ public class DataParser : Singleton<DataParser>
     /// </summary>
     private void LoadData()
     {
-        string path = $"{Application.dataPath}/Resources/{fileName}";
+        string path = $"{Application.dataPath}/StreamingAssets/{fileName}";
 
         StreamReader sr = new StreamReader(path);
         string line;
