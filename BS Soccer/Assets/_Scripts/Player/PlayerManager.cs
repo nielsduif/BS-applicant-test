@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private Player[] playerTypes;
     [SerializeField] Transform playerParent;
-    private Dictionary<int, PlayerDataDisplay> playerID = new Dictionary<int, PlayerDataDisplay>();
+    private Dictionary<int, PlayerDataDisplay> playerID = new Dictionary<int, PlayerDataDisplay>(); //id connected to player object
     [SerializeField] private int[] goalKeeperID = { 1, 124 };
 
     private void Start()
@@ -18,6 +18,11 @@ public class PlayerManager : MonoBehaviour
         CreatePlayers();
     }
 
+    /// <summary>
+    /// Instantiates prefab gameobjects for all persons in the dataset
+    /// Adjust their name accordingly with the jerseynumber
+    /// Adds the instantiated object to a dictionary
+    /// </summary>
     private void CreatePlayers()
     {
         foreach (DataParser.Person person in DataParser.Instance.frames[0].Persons)
@@ -38,12 +43,17 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies the transform data to the matched player based on the id in the dictionary
+    /// Also makes the model rotate towards the ball position
+    /// Sets the speedtext of the player to the one from the data
+    /// </summary>
     private void SetTransforms()
     {
         for (int i = 0; i < playerID.Count - 1; i++)
         {
             DataParser.DataFrame frame = DataParser.Instance.frames[FrameManager.Instance.CurrentFrame];
-            PlayerDataDisplay player = playerID[frame.Persons[i].Id];
+            PlayerDataDisplay player = playerID[frame.Persons[i].Id]; // get the correct player based upon the data id instead of index of a list
 
             Vector3 newPosition = Util.Float3ToVector(frame.Persons[i].Position);
             player.transform.position = newPosition;
@@ -66,11 +76,11 @@ public class PlayerManager : MonoBehaviour
     /// playerTypes[2] is assigned to goalies
     /// the prefabs[n] is the teamside, either 0 or 1 since there is no team for refs
     /// </summary>
-    /// <param name="_person"></param>
+    /// <param name="_person">Person data from the raw dataset</param>
     /// <returns></returns>
     private GameObject PickPersonAsset(DataParser.Person _person)
     {
-        if (IsGoalkeeper(_person.Id))
+        if (IsGoalkeeper(_person.Id))   //manual check for goalkeepers on ids, to assign the correct prefab
         {
             return playerTypes[1].prefabs[_person.TeamSide - 1];
         }
@@ -80,6 +90,11 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Compares the given id with the set goalies ids if the player indeed is a goalie
+    /// </summary>
+    /// <param name="_id">id to match with keepers id</param>
+    /// <returns></returns>
     private bool IsGoalkeeper(int _id)
     {
         return goalKeeperID.Contains(_id);

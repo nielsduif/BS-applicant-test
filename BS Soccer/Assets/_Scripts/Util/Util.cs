@@ -7,7 +7,7 @@ public static class Util
     /// <summary>
     /// Converting a float3 to a vector3, static to call whereever
     /// </summary>
-    /// <param name="_values"></param>
+    /// <param name="_values">Raw data from the dataset which will be converted</param>
     /// <returns></returns>
     public static Vector3 Float3ToVector(float[] _values)
     {
