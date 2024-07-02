@@ -12,7 +12,6 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] Transform playerParent;
     private Dictionary<int, PlayerDataDisplay> playerID = new Dictionary<int, PlayerDataDisplay>();
     [SerializeField] private int[] goalKeeperID = { 1, 124 };
-    private int currentFrame = 0;
 
     private void Start()
     {
@@ -33,10 +32,9 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (FramesAvailable())
+        if (FrameManager.Instance.FramesAvailable())
         {
             SetTransforms();
-            currentFrame++;
         }
     }
 
@@ -44,7 +42,7 @@ public class PlayerManager : MonoBehaviour
     {
         for (int i = 0; i < playerID.Count - 1; i++)
         {
-            DataParser.DataFrame frame = DataParser.Instance.frames[currentFrame];
+            DataParser.DataFrame frame = DataParser.Instance.frames[FrameManager.Instance.CurrentFrame];
             PlayerDataDisplay player = playerID[frame.Persons[i].Id];
 
             Vector3 newPosition = Util.Float3ToVector(frame.Persons[i].Position);
@@ -59,11 +57,6 @@ public class PlayerManager : MonoBehaviour
 
             player.UpdateSpeedText(frame.Persons[i].Speed);
         }
-    }
-
-    private bool FramesAvailable()
-    {
-        return (currentFrame < DataParser.Instance.frames.Count);
     }
 
     /// <summary>

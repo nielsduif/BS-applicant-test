@@ -6,7 +6,7 @@ using UnityEngine;
 /// Script that filters out all variables from the raw data file, creating classes with the specific variables stored inside of them
 /// Used https://jsoneditoronline.org/ to easily show all the stored content
 /// </summary>
-public class DataParser : MonoBehaviour
+public class DataParser : Singleton<DataParser>
 {
     /// <summary>
     /// Basic classes holding all the values provided in the rawdata
@@ -81,24 +81,15 @@ public class DataParser : MonoBehaviour
         public MatchScoreContext MatchScoreContext;
     }
     
-    public static DataParser Instance { get; private set; }
     [SerializeField] private string fileName = "Applicant-test.idf";
     [HideInInspector] public List<DataFrame> frames { get; private set; } = new List<DataFrame>();
 
     /// <summary>
     /// Singleton, making sure only one instance is present
     /// </summary>
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-
+        base.Awake();
         LoadData();
     }
 
