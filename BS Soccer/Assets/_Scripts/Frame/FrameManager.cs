@@ -7,6 +7,7 @@ public class FrameManager : Singleton<FrameManager>
 {
     public int CurrentFrame { get; private set; } = 0;      //frames index
     private PlayMode playMode = PlayMode.Play;
+    private PlayMode previousMode;
 
     public enum PlayMode
     {
@@ -41,7 +42,7 @@ public class FrameManager : Singleton<FrameManager>
                 break;
             case PlayMode.Restart:
                 CurrentFrame = 0;
-                playMode = PlayMode.Play;
+                playMode = previousMode;
                 break;
             default:
                 break;
@@ -63,6 +64,7 @@ public class FrameManager : Singleton<FrameManager>
     }
     public void SetRestart()
     {
+        previousMode = playMode;
         SetGameMode(PlayMode.Restart);
     }
 }
