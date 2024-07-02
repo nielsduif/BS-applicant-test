@@ -8,6 +8,8 @@ public class CameraManager : Singleton<CameraManager>
     private Transform parent;
     private Vector3 startPosition;
     private Quaternion startRotation;
+    [SerializeField] private KeyCode zoomIn = KeyCode.Q, zoomOut = KeyCode.W, resetZoom = KeyCode.E;
+    [SerializeField] int zoomSpeed = 10;
 
     private void Start()
     {
@@ -19,6 +21,7 @@ public class CameraManager : Singleton<CameraManager>
     private void FixedUpdate()
     {
         LookAtTarget();
+        HandleZoom();
     }
 
     private void LookAtTarget()
@@ -38,5 +41,27 @@ public class CameraManager : Singleton<CameraManager>
         transform.parent = parent;
         transform.position = startPosition;
         transform.rotation = startRotation;
+    }
+
+    private void HandleZoom()
+    {
+        if (Input.GetKey(zoomIn))
+        {
+            ApplyZoom(Vector3.forward);
+        }
+        else if (Input.GetKey(zoomOut))
+        {
+            ApplyZoom(Vector3.back);
+        }
+        else if (Input.GetKey(resetZoom))
+        {
+            SetOrigin();
+            CanvasManager.Instance.SetPlayerCanvasActive(false);
+        }
+    }
+
+    private void ApplyZoom(Vector3 _direction)
+    {
+        transform.Translate(_direction * zoomSpeed * Time.deltaTime);
     }
 }
