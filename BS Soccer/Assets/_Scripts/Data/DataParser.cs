@@ -82,11 +82,9 @@ public class DataParser : Singleton<DataParser>
     }
     
     [SerializeField] private string fileName = "Applicant-test.idf";
+    // List of all frames in the data
     [HideInInspector] public List<DataFrame> frames { get; private set; } = new List<DataFrame>();
 
-    /// <summary>
-    /// Singleton, making sure only one instance is present
-    /// </summary>
     protected override void Awake()
     {
         base.Awake();
@@ -94,7 +92,7 @@ public class DataParser : Singleton<DataParser>
     }
 
     /// <summary>
-    /// Loads the file based on location and adds the values for each frame to a list
+    /// Loads the file based on location and adds the values for each frame to a list with a StreamReader
     /// </summary>
     private void LoadData()
     {

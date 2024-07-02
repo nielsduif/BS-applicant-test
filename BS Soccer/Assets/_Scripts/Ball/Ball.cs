@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Ball manager class with one instance
+/// </summary>
 public class Ball : Singleton<Ball>
 {
     [SerializeField] private TextMeshPro ballSpeed;
@@ -20,6 +23,10 @@ public class Ball : Singleton<Ball>
         }
     }
 
+    /// <summary>
+    /// Pulling the ball position from the data with the correct gameframe and applying to the transform
+    /// Also updates the data representation for the ball speed
+    /// </summary>
     private void SetPosition()
     {
         DataParser.DataFrame frame = DataParser.Instance.frames[FrameManager.Instance.CurrentFrame];
