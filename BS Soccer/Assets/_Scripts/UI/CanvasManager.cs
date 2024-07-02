@@ -2,19 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CanvasManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI frameTextField;
-    private int currentFrame;
+    [SerializeField] private Slider frameSlider;
+
+    private void Start()
+    {
+        frameSlider.maxValue = DataParser.Instance.frames.Count;
+    }
 
     private void FixedUpdate()
     {
-        if (currentFrame < DataParser.Instance.frames.Count)
+        if (FrameManager.Instance.FramesAvailable())
         {
-            DataParser.DataFrame frame = DataParser.Instance.frames[currentFrame];
+            DataParser.DataFrame frame = DataParser.Instance.frames[FrameManager.Instance.CurrentFrame];
             frameTextField.text = $"{frame.FrameCount}";
-            currentFrame++;
+            frameSlider.value = FrameManager.Instance.CurrentFrame;
         }
+    }
+
+    public void UpdateFrames()
+    {
+        FrameManager.Instance.SetCurrentFrame((int)frameSlider.value);
     }
 }
